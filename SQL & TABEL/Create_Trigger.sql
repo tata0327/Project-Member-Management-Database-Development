@@ -1,0 +1,17 @@
+DELIMITER //
+
+CREATE TRIGGER Insert_Assignment
+BEFORE INSERT ON ASSIGNMENT
+FOR EACH ROW
+
+BEGIN
+
+	IF NOT EXISTS (SELECT * FROM SUBJECT WHERE SUBJECT.Subject_ID = NEW.SUBJECT.Subject_ID)
+	THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Insert not allowed: Only subjects with major "산업공학" are allowed.';
+	END IF;
+    
+END
+//
+DELIMITER ;
